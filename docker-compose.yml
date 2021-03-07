@@ -1,0 +1,49 @@
+version: "3.4"
+
+services:
+  webserver:
+    build:
+      context: ./docker/bin/webserver
+    container_name: 'digitalwallet-webserver-7.4'
+    restart: 'no'
+    ports:
+      - "80:80"
+    links:
+      - mysql
+    volumes:
+      - ./:/var/www/html
+      - ./docker/config/php/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/config/vhosts:/etc/apache2/sites-enabled
+      - ./docker/logs/apache2:/var/log/apache2
+  mysql:
+    build: ./docker/bin/mysql
+    container_name: 'digitalwallet-mysql-5.7'
+    volumes:
+      - ./docker/data/mysql:/var/lib/mysql
+      - ./docker/logs/mysql:/var/log/mysql
+      - ./docker/config/mysql:/etc/mysql/conf.d
+    restart: 'no'
+    ports:
+      - "33061:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: docker
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: 'digitalwallet-phpmyadmin'
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: docker
+      PMA_PASSWORD: docker
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+    ports:
+      - '8081:80'
+    volumes:
+      - /sessions
