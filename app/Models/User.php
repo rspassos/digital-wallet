@@ -20,6 +20,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'cpf',
+        'user_type_id',
+        'balance'
     ];
 
     /**
@@ -40,4 +43,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // One-to-Many (inverse)
+    public function type()
+    {
+        return $this->belongsTo(UserType::class,'user_type_id','id');
+    }
 }
