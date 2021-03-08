@@ -51,4 +51,22 @@ class TransactionRepository implements TransactionRepositoryContract
         throw new Exception('Transaction not found.');
     }
 
+    public function approve(int $id): bool
+    {
+        $this->model
+            ->where('id', $id)
+            ->update(['status' => 'approved']);
+
+        return true;
+    }
+
+    public function cancel(int $id): bool
+    {
+        $this->model
+            ->where('id', $id)
+            ->update(['status' => 'canceled']);
+
+        return true;
+    }
+
 }

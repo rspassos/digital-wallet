@@ -2,8 +2,12 @@
 
 namespace App\Services;
 
-use App\Repositories\Contracts\TransactionRepositoryContract;
+use Exception;
+use Throwable;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\Http;
 use App\Services\Contracts\TransactionServiceContract;
+use App\Repositories\Contracts\TransactionRepositoryContract;
 
 class TransactionService implements TransactionServiceContract
 {
@@ -24,5 +28,22 @@ class TransactionService implements TransactionServiceContract
     public function add(array $data): array
     {
         return $this->transactionRepository->create($data);
+    }
+
+    public function authorize(Transaction $transaction): bool
+    {
+        try {
+            $response = Http::get(config('services.api.authorizer'));
+
+            if ($response['message']) {
+                $this->transactionRepository->approve($transaction->id);
+            }
+
+            return true;
+        } catch (Exception | Throwable $e) {
+            $this->transactionRepository->cancel($transaction->id);
+        }
+        
+        return true;
     }
 }

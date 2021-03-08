@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'api' => [
+        'authorizer' => env('API_AUTHORIZER'),
+        'notification' => env('API_NOTIFICATION'),
+    ]
+
 ];
