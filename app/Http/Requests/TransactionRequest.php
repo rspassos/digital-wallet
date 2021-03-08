@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\hasBalance;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Services\Contracts\UserServiceContract;
 
@@ -35,7 +36,13 @@ class TransactionRequest extends FormRequest
         return [
             'payer' => 'bail|required|int|exists:users,id',
             'payee' => 'bail|required|int|exists:users,id',
-            'value' => 'bail|required|numeric|min:0.01'
+            'value' => [
+                'bail',
+                'required',
+                'numeric',
+                'min:0.01',
+                new hasBalance($this->input('payer'))
+            ]
         ];
     }
 }

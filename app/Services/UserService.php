@@ -34,4 +34,13 @@ class UserService implements UserServiceContract
 
         return false;
     }
+
+    public function balance(int $id): float
+    {
+        if ($user = $this->userRepository->find($id)) {
+            return $user['balance'];
+        }
+
+        return 0.0;
+    }
 }
