@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
-use App\Events\TransactionApproved;
-use App\Jobs\TransactionNotification;
 use Exception;
 use Throwable;
 use App\Models\Transaction;
+use App\Jobs\TransactionApproved;
 use Illuminate\Support\Facades\Http;
 use App\Services\Contracts\TransactionServiceContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
@@ -39,16 +38,13 @@ class TransactionService implements TransactionServiceContract
 
             if ($response['message'] && $response['message'] == 'Autorizado') {
                 $this->transactionRepository->approve($transaction->id);
-                // event(new TransactionApproved($transaction));
-                dispatch(new TransactionNotification($transaction));
-
+                dispatch(new TransactionApproved($transaction));
                 return true;
             }
 
             throw new Exception('Transaction not autorized.');
 
         } catch (Exception | Throwable $e) {
-            dd($e);
             $this->transactionRepository->cancel($transaction->id);
         }
         

@@ -49,5 +49,4 @@ class UserRepository implements UserRepositoryContract
 
         throw new Exception('Error on update.');
     }
-
 }

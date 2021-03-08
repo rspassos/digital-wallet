@@ -49,6 +49,26 @@ class UserService implements UserServiceContract
         return 0.0;
     }
 
+    public function pay(int $userId, float $value): array
+    {
+        $user = $this->userRepository->find($userId);
+
+        return $this->userRepository->update(
+            ['balance' => $user['balance'] - $value],
+            $userId
+        );
+    }
+
+    public function receive(int $userId, float $value): array
+    {
+        $user = $this->userRepository->find($userId);
+
+        return $this->userRepository->update(
+            ['balance' => $user['balance'] + $value],
+            $userId
+        );
+    }
+
     public function notifyTransaction(Transaction $transaction): bool
     {
         try {
