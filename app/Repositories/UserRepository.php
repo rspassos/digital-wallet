@@ -28,10 +28,10 @@ class UserRepository implements UserRepositoryContract
 
     public function find(int $id): array
     {
-        $user = $this->model->find($id);
+        $user = $this->model->with('type:id,name,pay,receive')->find($id);
         
         if($user) {
-            return $user;
+            return $user->toArray();
         }
 
         throw new Exception('User not found.');

@@ -25,4 +25,13 @@ class UserService implements UserServiceContract
     {
         return $this->userRepository->all();
     }
+
+    public function canPay(int $id): bool
+    {
+        if ($user = $this->userRepository->find($id)) {
+            return boolval($user['type']['pay']);
+        }
+
+        return false;
+    }
 }
