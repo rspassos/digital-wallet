@@ -2,8 +2,13 @@
 
 namespace App\Services;
 
-use App\Repositories\Contracts\UserRepositoryContract;
+use Exception;
+use Throwable;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use App\Services\Contracts\UserServiceContract;
+use App\Repositories\Contracts\UserRepositoryContract;
 
 class UserService implements UserServiceContract
 {
@@ -42,5 +47,23 @@ class UserService implements UserServiceContract
         }
 
         return 0.0;
+    }
+
+    public function notifyTransaction(Transaction $transaction): bool
+    {
+        try {
+            $response = Http::get(config('services.api.notification'));
+
+            if ($response['message'] && $response['message'] == 'Enviado') {
+                Log::info('Transação '.$transaction->id.' notificada. ');
+            }
+
+            return true;
+        } catch (Exception | Throwable $e) {
+            Log::info('Transação '.$transaction->id.' falhou a ser notificada. ');
+            return false;
+        }
+
+        return true;
     }
 }

@@ -56,7 +56,7 @@ class TransactionRepository implements TransactionRepositoryContract
         $this->model
             ->where('id', $id)
             ->update(['status' => 'approved']);
-
+        
         return true;
     }
 
