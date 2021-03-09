@@ -21,15 +21,15 @@ class Transaction extends Model
         'status'
     ];
 
-    // One-to-Many (inverse)
-    public function payer()
-    {
-        return $this->belongsTo(User::class,'payer','id');
-    }
+    // // One-to-Many (inverse)
+    // public function payer()
+    // {
+    //     return $this->belongsTo(User::class,'payer','id');
+    // }
 
-    // One-to-Many (inverse)
-    public function payee()
-    {
-        return $this->belongsTo(User::class,'payee','id');
-    }
+    // // One-to-Many (inverse)
+    // public function payee()
+    // {
+    //     return $this->belongsTo(User::class,'payee','id');
+    // }
 }

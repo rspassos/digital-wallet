@@ -7,6 +7,7 @@ use Throwable;
 use App\Models\Transaction;
 use App\Jobs\TransactionApproved;
 use Illuminate\Support\Facades\Http;
+use App\Jobs\TransactionNotification;
 use App\Services\Contracts\TransactionServiceContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
 
@@ -39,6 +40,7 @@ class TransactionService implements TransactionServiceContract
             if ($response['message'] && $response['message'] == 'Autorizado') {
                 $this->transactionRepository->approve($transaction->id);
                 dispatch(new TransactionApproved($transaction));
+                dispatch(new TransactionNotification($transaction));
                 return true;
             }
 

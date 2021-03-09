@@ -23,7 +23,7 @@ class TransactionRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->userService->canPay($this->input('payer'));
+        return $this->userService->canPay($this->input('payer',0));
     }
 
     /**

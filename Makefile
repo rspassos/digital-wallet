@@ -9,3 +9,9 @@ fix-permissions:
 
 migrate:
 	docker exec digitalwallet-webserver-7.4 php artisan migrate
+
+docker-bash:
+	docker exec -it digitalwallet-webserver-7.4 bash
+
+test:
+	php artisan test --coverage-text --testdox

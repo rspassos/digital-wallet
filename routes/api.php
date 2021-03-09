@@ -15,5 +15,5 @@ use App\Http\Controllers\Api\TransactionController;
 |
 */
 
-Route::get('user', [UserController::class, 'index']);
-Route::post('transaction', [TransactionController::class, 'store']);
+Route::get('user', [UserController::class, 'index'])->name('users');
+Route::post('transaction', [TransactionController::class, 'store'])->name('transaction.store');

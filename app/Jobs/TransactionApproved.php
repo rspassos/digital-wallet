@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\Transaction;
 use Illuminate\Bus\Queueable;
-use App\Jobs\TransactionNotification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -39,7 +38,5 @@ class TransactionApproved implements ShouldQueue
     {
         $this->userService->pay($this->transaction->payer, $this->transaction->value);
         $this->userService->receive($this->transaction->payee, $this->transaction->value);
-
-        dispatch(new TransactionNotification($this->transaction));
     }
 }

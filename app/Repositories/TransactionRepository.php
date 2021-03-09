@@ -53,18 +53,18 @@ class TransactionRepository implements TransactionRepositoryContract
 
     public function approve(int $id): bool
     {
-        $this->model
-            ->where('id', $id)
-            ->update(['status' => 'approved']);
+        $this->update([
+            'status' => 'approved'
+        ], $id);
         
         return true;
     }
 
     public function cancel(int $id): bool
     {
-        $this->model
-            ->where('id', $id)
-            ->update(['status' => 'canceled']);
+        $this->update([
+            'status' => 'canceled'
+        ], $id);
 
         return true;
     }
