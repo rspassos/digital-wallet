@@ -10,6 +10,9 @@ fix-permissions:
 migrate:
 	docker exec digitalwallet-webserver-7.4 php artisan migrate
 
+seed:
+	docker exec digitalwallet-webserver-7.4 php artisan db:seed
+
 docker-bash:
 	docker exec -it digitalwallet-webserver-7.4 bash
 
