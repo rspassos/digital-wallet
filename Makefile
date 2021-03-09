@@ -17,4 +17,4 @@ docker-bash:
 	docker exec -it digitalwallet-webserver-7.4 bash
 
 test:
-	php artisan test --coverage-text --testdox
+	docker exec -it digitalwallet-webserver-7.4 php artisan test --coverage-text --testdox

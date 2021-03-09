@@ -35,8 +35,12 @@ Transferência:
     - MySQL 5.7
 
 ## Primeira instalação
-  - docker-compose up --build
-    
+  - Liberar a porta 80
+  - Rodar o docker compose:
+    ```
+    $ docker-compose up --build
+    ```
+
   - Se der problema com permissão:
       ```
       $ make fix-permissions
