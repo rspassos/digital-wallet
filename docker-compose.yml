@@ -15,6 +15,8 @@ services:
       - ./docker/config/php/php.ini:/usr/local/etc/php/php.ini
       - ./docker/config/vhosts:/etc/apache2/sites-enabled
       - ./docker/logs/apache2:/var/log/apache2
+      - ./docker/config/cron/cron:/etc/cron.d/cron
+      - ./docker/logs/cron:/var/log/cron
   mysql:
     build: ./docker/bin/mysql
     container_name: 'digitalwallet-mysql-5.7'

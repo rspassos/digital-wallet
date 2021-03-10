@@ -43,4 +43,12 @@ RUN docker-php-ext-install -j$(nproc) gd
 # Enable apache modules
 RUN a2enmod rewrite headers
 
-ENTRYPOINT composer install && /usr/sbin/apache2ctl -D FOREGROUND
+# Install cron
+RUN apt-get -y install cron
+
+# Copy cron file to the cron.d directory
+RUN touch /etc/cron.d/cron
+RUN chmod 0644 /etc/cron.d/cron
+RUN mkdir -p /var/log/cron
+
+ENTRYPOINT crontab /etc/cron.d/cron && cron start && composer install && /usr/sbin/apache2ctl -D FOREGROUND

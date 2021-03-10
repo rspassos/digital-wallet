@@ -1,0 +1,2 @@
+* * * * * echo "`date`: working" >> /var/log/cron/cron.log
+* * * * * php /var/www/html/artisan schedule:run >> /var/log/cron/cron.log

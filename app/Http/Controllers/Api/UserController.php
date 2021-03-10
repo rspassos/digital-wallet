@@ -10,15 +10,25 @@ use App\Services\Contracts\UserServiceContract;
 
 class UserController extends Controller
 {
+    /**
+     * @var UserServiceContract
+     */
     private $userService;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @param UserServiceContract $userServiceContract
+     */
     public function __construct(UserServiceContract $userServiceContract)
     {
         $this->userService = $userServiceContract;
     }
 
     /**
-     * 
+     * Display a listing of users.
+     *
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {

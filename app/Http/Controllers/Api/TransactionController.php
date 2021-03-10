@@ -11,15 +11,23 @@ use App\Services\Contracts\TransactionServiceContract;
 
 class TransactionController extends Controller
 {
+    /**
+     * @var TransactionServiceContract
+     */
     private $transactionService;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @param TransactionServiceContract $transactionServiceContract
+     */
     public function __construct(TransactionServiceContract $transactionServiceContract)
     {
         $this->transactionService = $transactionServiceContract;
     }
 
     /**
-     * Display a listing of the resource.
+     * Save a transaction.
      *
      * @return \Illuminate\Http\Response
      */

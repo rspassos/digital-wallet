@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Jobs\TransactionAuthorization;
 use App\Models\Transaction;
 use App\Services\Contracts\TransactionServiceContract;
 
@@ -20,6 +21,6 @@ class TransactionObserver
      */
     public function created(Transaction $transaction)
     {
-        $this->transactionService->authorize($transaction);
+        dispatch(new TransactionAuthorization($transaction));
     }
 }

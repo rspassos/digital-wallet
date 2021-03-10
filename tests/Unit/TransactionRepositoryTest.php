@@ -47,6 +47,53 @@ class TransactionRepositoryTest extends TestCase
         $this->assertArrayHasKey('payee', $result);
         $this->assertArrayHasKey('payer', $result);
         $this->assertArrayHasKey('value', $result);
+
+        $newTransaction = $transaction->find($result['id']);
+
+        $this->assertArrayHasKey('payee', $newTransaction);
+    }
+
+    /**
+     * A basic unit test example.
+     *
+     * @return void
+     */
+    public function test_transaction_find()
+    {
+        $transaction = app(TransactionRepository::class);
+
+        $result = $transaction->create([
+            'payee' => $this->common->id,
+            'payer' => $this->shopkeeper->id,
+            'value' => '100'
+        ]);
+
+        $newTransaction = $transaction->find($result['id']);
+
+        $this->assertArrayHasKey('payee', $newTransaction);
+    }
+
+    /**
+     * A basic unit test example.
+     *
+     * @return void
+     */
+    public function test_transaction_update()
+    {
+        $TransactionRepository = app(TransactionRepository::class);
+
+        $transaction = Transaction::withoutEvents(function () {
+            return Transaction::query()->create([
+                'payer' => $this->common->id,
+                'payee' => $this->shopkeeper->id,
+                'value' => 500,
+                'status' => 'pending'
+            ]);
+        });
+
+        $updatedTransaction = $TransactionRepository->update(['status' => 'canceled'], $transaction->id);
+
+        $this->assertStringContainsString('canceled', $updatedTransaction['status']);
     }
 
     /**
@@ -68,10 +115,11 @@ class TransactionRepositoryTest extends TestCase
         $this->assertStringContainsString('pending', $transaction->status);
 
         $TransactionRepository = app(TransactionRepository::class);
-        $TransactionRepository->approve($transaction->id);
-        $result = $TransactionRepository->find($transaction->id);
+        $result = $TransactionRepository->approve($transaction->id);
+        $this->assertTrue($result);
 
-        $this->assertStringContainsString('approved', $result['status']);
+        $transactionApproved = $TransactionRepository->find($transaction->id);
+        $this->assertStringContainsString('approved', $transactionApproved['status']);
     }
 
     /**
@@ -93,9 +141,11 @@ class TransactionRepositoryTest extends TestCase
         $this->assertStringContainsString('pending', $transaction->status);
 
         $TransactionRepository = app(TransactionRepository::class);
-        $TransactionRepository->cancel($transaction->id);
-        $result = $TransactionRepository->find($transaction->id);
+        $result = $TransactionRepository->cancel($transaction->id);
+        $this->assertTrue($result);
 
-        $this->assertStringContainsString('canceled', $result['status']);
+        $transactionCanceled = $TransactionRepository->find($transaction->id);
+
+        $this->assertStringContainsString('canceled', $transactionCanceled['status']);
     }
 }
